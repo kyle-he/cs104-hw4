@@ -1,5 +1,5 @@
 #ifndef RECCHECK
-//if you want to add any #includes like <iostream> you must do them here (before the next endif)
+#include <algorithm>
 
 #endif
 
@@ -7,12 +7,30 @@
 using namespace std;
 
 
-// You may add any prototypes of helper functions here
+int getHeight(Node* root) {
+    if (root == nullptr) {
+        return 0;
+    }
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
 
-
-bool equalPaths(Node * root)
-{
-    // Add your code below
-
+    return 1 + max(leftHeight, rightHeight);
 }
 
+bool equalPaths(Node* root)
+{
+    if (root == nullptr) {
+        return true;
+    }
+
+    if (root->left != nullptr && root->right != nullptr) {
+        int leftHeight = getHeight(root->left);
+        int rightHeight = getHeight(root->right);
+
+        if (abs(leftHeight - rightHeight) > 0) {
+            return false;
+        }
+    }
+    
+    return equalPaths(root->left) && equalPaths(root->right);
+}
